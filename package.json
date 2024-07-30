@@ -1,0 +1,33 @@
+{
+    "name": "wireceptor",
+    "version": "1.1.0",
+    "description": "WireGuard indicator and toggle",
+    "author": "Harun Muderizovic",
+    "main": "src/main.js",
+    "license": "MIT",
+    "scripts": {
+        "dev": "electron src/main.js",
+        "build": "electron-builder",
+        "dist": "mkdir -p dist && rm -rf dist/* && yarn build && cp build/Wireceptor-*.AppImage dist && cp assets/logo.png dist",
+        "clean": "rm -rf node_modules build dist yarn-error.log"
+    },
+    "build": {
+        "appId": "wireceptor",
+        "productName": "Wireceptor",
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "category": "Utility",
+            "icon": "assets/logo.png"
+        },
+        "directories": {
+            "output": "build"
+        }
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "electron": "^31.2.1",
+        "electron-builder": "^24.13.3"
+    }
+}

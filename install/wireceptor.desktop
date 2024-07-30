@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Wireceptor
+Comment=WireGuard indicator and toggle
+Exec=/opt/wireceptor/Wireceptor-<VERSION>.AppImage
+Icon=/opt/wireceptor/logo.png
+Terminal=false
+Type=Application
+Categories=Utility;
