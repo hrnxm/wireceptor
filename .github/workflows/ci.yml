@@ -1,0 +1,51 @@
+name: CI
+
+on:
+    push:
+        tags:
+            - "*"
+        branches:
+            - main
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 22
+
+            - name: Install dependencies
+              run: yarn install
+
+            - name: Build the project
+              run: yarn dist
+
+            - name: Prepare artifacts
+              run: |
+                  mv dist wireceptor
+                  cp -r scripts wireceptor
+                  cp install/install.sh .
+                  cp install/bypassword.sh .
+                  cp install/wireceptor.desktop .
+                  VERSION=$(sed -n 's/.*"version": "\(.*\)".*/\1/p' package.json)
+                  sed -i "s/<VERSION>/$VERSION/g" wireceptor.desktop
+                  chmod +x wireceptor.desktop
+                  chmod +x install.sh
+
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Wireceptor
+                  path: |
+                      wireceptor
+                      wireceptor.desktop
+                      install.sh
+                      bypassword.sh
