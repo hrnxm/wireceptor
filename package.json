@@ -1,6 +1,6 @@
 {
     "name": "wireceptor",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "WireGuard indicator and toggle",
     "author": "Harun Muderizovic",
     "main": "src/main.js",
