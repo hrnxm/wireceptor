@@ -7,8 +7,8 @@ SUDOERS_FILE="/etc/sudoers"
 BACKUP_FILE="$SUDOERS_FILE.pre-wireceptor"
 APP_DIR="/opt/wireceptor"
 SUDOERS_RULES=(
-  "$USER ALL=(ALL) NOPASSWD: /bin/systemctl start wg-quick@$WG_INTERFACE"
-  "$USER ALL=(ALL) NOPASSWD: /bin/systemctl stop wg-quick@$WG_INTERFACE"
+  "$USER ALL=(ALL) NOPASSWD: /bin/systemctl start wg-quick@$WG_INTERFACE.service"
+  "$USER ALL=(ALL) NOPASSWD: /bin/systemctl stop wg-quick@$WG_INTERFACE.service"
 )
 
 echo "Backing up current sudoers file to $BACKUP_FILE"
