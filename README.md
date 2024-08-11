@@ -24,6 +24,10 @@ Scripts for managing the WireGuard status are located in `Downloads/Wireceptor/w
 
 ## Changelog
 
+### [1.1.1] - Bypass password fix
+
+-   Fix the format in `bypassword.sh` script.
+
 ### [1.1.0] - Bypass password
 
 -   Run the `bypassword.sh` script if you want to avoid password prompt for turning WireGuard ON/OFF.
