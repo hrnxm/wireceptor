@@ -24,7 +24,7 @@ Scripts for managing the WireGuard status are located in `Downloads/Wireceptor/w
 
 ## Changelog
 
-### [1.1.1] - Bypass password fix
+### [[1.1.1](https://github.com/hrnxm/wireceptor/actions/runs/10338840193/artifacts/1799013553)] - Bypass password fix
 
 -   Fix the format in `bypassword.sh` script.
 
