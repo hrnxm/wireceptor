@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "electron src/main.js",
-        "build": "electron-builder",
+        "build": "electron-builder -p never",
         "dist": "mkdir -p dist && rm -rf dist/* && yarn build && cp build/Wireceptor-*.AppImage dist && cp assets/logo.png dist",
         "clean": "rm -rf node_modules build dist yarn-error.log"
     },
