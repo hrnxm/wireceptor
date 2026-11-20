@@ -27,3 +27,34 @@ jobs:
           path: dist/*.deb
           archive: false
           if-no-files-found: error
+
+  release-assets:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: package
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: 'wireceptor_*.deb'
+          path: dist
+          merge-multiple: true
+      - name: Attach tested packages to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          version=${GITHUB_REF_NAME#v}
+          packages=("dist/wireceptor_${version}_amd64.deb" "dist/wireceptor_${version}_arm64.deb")
+          for package in "${packages[@]}"; do test -f "$package"; done
+
+          if assets=$(gh release view "$GITHUB_REF_NAME" --json assets --jq '.assets[].name'); then
+            for package in "${packages[@]}"; do
+              if ! grep -Fxq -- "${package##*/}" <<< "$assets"; then
+                gh release upload "$GITHUB_REF_NAME" "$package"
+              fi
+            done
+          else
+            gh release create "$GITHUB_REF_NAME" "${packages[@]}" --verify-tag --draft --title "$GITHUB_REF_NAME" --notes ""
+          fi
