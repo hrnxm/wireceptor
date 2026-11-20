@@ -1,51 +1,29 @@
-name: CI
+name: Build Debian package
 
 on:
-    push:
-        tags:
-            - "*"
-        branches:
-            - main
-    pull_request:
-    workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ['*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v3
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 22
-
-            - name: Install dependencies
-              run: yarn install
-
-            - name: Build the project
-              run: yarn dist
-
-            - name: Prepare artifacts
-              run: |
-                  mv dist wireceptor
-                  cp -r scripts wireceptor
-                  cp install/install.sh .
-                  cp install/bypassword.sh .
-                  cp install/wireceptor.desktop .
-                  VERSION=$(sed -n 's/.*"version": "\(.*\)".*/\1/p' package.json)
-                  sed -i "s/<VERSION>/$VERSION/g" wireceptor.desktop
-                  chmod +x wireceptor.desktop
-                  chmod +x install.sh
-
-            - name: Upload artifacts
-              uses: actions/upload-artifact@v3
-              with:
-                  name: Wireceptor
-                  path: |
-                      wireceptor
-                      wireceptor.desktop
-                      install.sh
-                      bypassword.sh
+  package:
+    strategy:
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v6
+      - run: cargo test --locked
+      - run: ./packaging/build-deb.sh
+      - run: dpkg-deb --info dist/*.deb && dpkg-deb --contents dist/*.deb
+      - run: sudo sh tests/wg-quick-control.sh dist/*.deb
+      - uses: actions/upload-artifact@v7
+        with:
+          path: dist/*.deb
+          archive: false
+          if-no-files-found: error

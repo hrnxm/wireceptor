@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Wireceptor
+Comment=Monitor and switch WireGuard connections
+Exec=wireceptor
+Icon=wireceptor
+Terminal=false
+Categories=Network;

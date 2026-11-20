@@ -1,0 +1,6 @@
+[Allow local desktop administrators to switch WireGuard tunnels]
+Identity=unix-group:sudo
+Action=io.github.hrnxm.wireceptor.toggle
+ResultAny=auth_admin
+ResultInactive=auth_admin
+ResultActive=yes

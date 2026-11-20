@@ -1,0 +1,8 @@
+#!/bin/sh
+# pkexec authorizes this executable. Validate every argument here as well as in the tray.
+export LC_ALL=C
+[ "$#" -eq 2 ] || exit 2
+case "$1" in start|stop) ;; *) exit 2 ;; esac
+case "$2" in ''|.|..|*[!a-zA-Z0-9_.-]*) exit 2 ;; esac
+[ "${#2}" -le 15 ] || exit 2
+exec /usr/bin/systemctl --system --no-ask-password "$1" "wg-quick@$2.service"

@@ -1,0 +1,6 @@
+polkit.addRule(function(action, subject) {
+    if (action.id === "io.github.hrnxm.wireceptor.toggle" &&
+        subject.local && subject.active && subject.isInGroup("sudo")) {
+        return polkit.Result.YES;
+    }
+});
